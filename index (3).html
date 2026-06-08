@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Designed By Yemi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d0a14;
+      --bg2: #130f1e;
+      --card: #1a1428;
+      --card-border: rgba(160, 100, 255, 0.15);
+      --accent: #a855f7;
+      --accent2: #7c3aed;
+      --accent-glow: rgba(168, 85, 247, 0.35);
+      --text: #f0eafa;
+      --text-muted: #9d8fbf;
+      --nav-bg: rgba(13, 10, 20, 0.85);
+      --section-alt: #110d1c;
+      --input-bg: #1e1730;
+      --shadow: 0 8px 40px rgba(120, 50, 220, 0.18);
+    }
+    [data-theme="light"] {
+      --bg: #f5f0ff;
+      --bg2: #ede6ff;
+      --card: #fff;
+      --card-border: rgba(120, 60, 220, 0.12);
+      --accent: #7c3aed;
+      --accent2: #a855f7;
+      --accent-glow: rgba(120, 60, 220, 0.18);
+      --text: #1a1030;
+      --text-muted: #6b5e8a;
+      --nav-bg: rgba(245, 240, 255, 0.88);
+      --section-alt: #ede6ff;
+      --input-bg: #ede6ff;
+      --shadow: 0 8px 40px rgba(120, 50, 220, 0.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.4s, color 0.4s;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 5%;
+      background: var(--nav-bg);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--card-border);
+      transition: background 0.4s;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+    .logo span { color: var(--text); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--text-muted); font-size: 0.9rem; font-weight: 500;
+      text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
+    .theme-toggle {
+      background: var(--card); border: 1px solid var(--card-border);
+      color: var(--text); cursor: pointer; border-radius: 50%;
+      width: 38px; height: 38px; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s; padding: 0;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: rotate(20deg); }
+    .nav-cta {
+      background: var(--accent); color: #fff; border: none;
+      border-radius: 50px; padding: 0.5rem 1.3rem;
+      font-size: 0.88rem; font-weight: 600; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; text-decoration: none;
+      transition: opacity 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 18px var(--accent-glow);
+    }
+    .nav-cta:hover { opacity: 0.88; box-shadow: 0 0 30px var(--accent-glow); }
+
+    /* hamburger */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.3s; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 7rem 5% 4rem;
+      position: relative;
+    }
+    .hero-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 3rem; width: 100%; max-width: 1100px;
+    }
+    .hero-text {
+      display: flex; flex-direction: column; align-items: flex-start;
+      max-width: 580px;
+    }
+    .hero-photo {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 1rem; flex-shrink: 0;
+    }
+    .hero-photo-ring {
+      width: 300px; height: 300px; border-radius: 50%;
+      border: 3px solid var(--accent);
+      box-shadow: 0 0 40px var(--accent-glow);
+      overflow: hidden; position: relative;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+    .hero-photo-ring img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .hero-photo-label {
+      color: var(--text-muted); font-size: 0.85rem;
+      font-weight: 500; letter-spacing: 0.05em;
+      animation: fadeUp 0.7s 0.4s ease both;
+    }
+    .hero-glow {
+      position: absolute; width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(168,85,247,0.18) 0%, transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--card); border: 1px solid var(--card-border);
+      border-radius: 50px; padding: 0.4rem 1rem;
+      font-size: 0.8rem; color: var(--accent); font-weight: 500;
+      margin-bottom: 1.5rem; animation: fadeUp 0.7s ease both;
+    }
+    .hero-badge::before { content: '✦'; font-size: 0.7rem; }
+    h1.hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 6vw, 4.8rem);
+      font-weight: 900; line-height: 1.12;
+      color: var(--text);
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+    h1.hero-title span { color: var(--accent); }
+    .hero-sub {
+      max-width: 560px; margin: 1.4rem auto 0;
+      color: var(--text-muted); font-size: 1.05rem; line-height: 1.7;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+    .hero-btns {
+      display: flex; gap: 1rem; margin-top: 2.2rem;
+      flex-wrap: wrap; animation: fadeUp 0.7s 0.3s ease both;
+    }
+    .btn-primary {
+      background: var(--accent); color: #fff; border: none;
+      border-radius: 50px; padding: 0.85rem 2rem;
+      font-size: 0.95rem; font-weight: 600; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; text-decoration: none;
+      box-shadow: 0 0 28px var(--accent-glow); transition: all 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--card-border); border-radius: 50px;
+      padding: 0.85rem 2rem; font-size: 0.95rem; font-weight: 500;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+    .hero-scroll {
+      margin-top: 3.5rem; color: var(--text-muted); font-size: 0.8rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      animation: fadeUp 0.7s 0.5s ease both;
+    }
+    .scroll-line {
+      width: 1px; height: 50px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollPulse 2s infinite;
+    }
+
+    /* ── SECTIONS ── */
+    section { position: relative; z-index: 1; padding: 5rem 5%; }
+    .section-alt { background: var(--section-alt); }
+    .section-label {
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.18em;
+      color: var(--accent); text-transform: uppercase; margin-bottom: 0.7rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800; color: var(--text); line-height: 1.2;
+    }
+    .section-sub {
+      color: var(--text-muted); margin-top: 0.8rem; font-size: 1rem;
+      max-width: 520px; line-height: 1.7;
+    }
+    .section-head { text-align: center; margin-bottom: 3.5rem; }
+    .section-head .section-sub { margin-left: auto; margin-right: auto; }
+
+    /* ── SERVICES ── */
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem; max-width: 1100px; margin: 0 auto;
+    }
+    .service-card {
+      background: var(--card); border: 1px solid var(--card-border);
+      border-radius: 20px; padding: 2rem;
+      transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow);
+      border-color: var(--accent);
+    }
+    .service-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin-bottom: 1.2rem;
+    }
+    .service-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem;
+      color: var(--text);
+    }
+    .service-card p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.65; }
+
+    /* ── WHY CHOOSE US ── */
+    .why-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.4rem; max-width: 1100px; margin: 0 auto;
+    }
+    .why-card {
+      background: var(--card); border: 1px solid var(--card-border);
+      border-radius: 18px; padding: 1.8rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .why-card:hover { border-color: var(--accent); box-shadow: var(--shadow); }
+    .why-card h4 {
+      font-family: 'Playfair Display', serif; font-size: 1.05rem;
+      color: var(--accent); margin-bottom: 0.5rem;
+    }
+    .why-card p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+
+    /* ── PORTFOLIO ── */
+    .portfolio-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem; max-width: 1100px; margin: 0 auto;
+    }
+    .portfolio-item {
+      border-radius: 18px; overflow: hidden;
+      border: 1px solid var(--card-border); background: var(--card);
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+    }
+    .portfolio-item:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+    .portfolio-img {
+      width: 100%; aspect-ratio: 4/3;
+      background: var(--card);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .portfolio-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block; transition: transform 0.4s ease;
+    }
+    .portfolio-item:hover .portfolio-img img { transform: scale(1.05); }
+    .portfolio-img::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.35));
+      pointer-events: none;
+    }
+    .portfolio-info { padding: 1.2rem; }
+    .portfolio-info h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.3rem;
+    }
+    .portfolio-info p { color: var(--text-muted); font-size: 0.85rem; }
+    .portfolio-tag {
+      display: inline-block; margin-top: 0.6rem;
+      background: rgba(168,85,247,0.15); color: var(--accent);
+      border-radius: 50px; padding: 0.2rem 0.8rem; font-size: 0.75rem; font-weight: 600;
+    }
+    /* FILTER TABS */
+    .filter-tabs {
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+      justify-content: center; margin-bottom: 2.5rem;
+    }
+    .filter-btn {
+      background: var(--card); border: 1px solid var(--card-border);
+      color: var(--text-muted); border-radius: 50px;
+      padding: 0.5rem 1.3rem; font-size: 0.85rem; font-weight: 500;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--accent); color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+    .portfolio-item.hidden { display: none; }
+
+    .portfolio-note {
+      text-align: center; margin-top: 2rem;
+      color: var(--text-muted); font-size: 0.9rem;
+    }
+    .portfolio-note a { color: var(--accent); text-decoration: none; }
+
+    /* ── ABOUT ── */
+    .about-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+    }
+    .about-visual {
+      border-radius: 24px; overflow: hidden;
+      border: 1px solid var(--card-border);
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      min-height: 380px; display: flex; align-items: center; justify-content: center;
+      font-size: 5rem; position: relative;
+    }
+    .about-visual::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.08), transparent);
+    }
+    .about-text { display: flex; flex-direction: column; gap: 1.2rem; }
+    .about-text p { color: var(--text-muted); line-height: 1.75; font-size: 0.97rem; }
+    .about-stat {
+      display: flex; gap: 2rem; margin-top: 0.5rem; flex-wrap: wrap;
+    }
+    .stat { display: flex; flex-direction: column; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem; font-weight: 900; color: var(--accent); line-height: 1;
+    }
+    .stat-label { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+    /* ── CONTACT ── */
+    .contact-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+    }
+    .contact-info { display: flex; flex-direction: column; gap: 1.4rem; }
+    .contact-item {
+      display: flex; align-items: flex-start; gap: 1rem;
+      background: var(--card); border: 1px solid var(--card-border);
+      border-radius: 16px; padding: 1.2rem 1.4rem;
+    }
+    .contact-icon {
+      width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+    }
+    .contact-item h5 { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; margin-bottom: 0.2rem; }
+    .contact-item a, .contact-item p { color: var(--text); font-size: 0.92rem; font-weight: 500; text-decoration: none; }
+    .contact-item a:hover { color: var(--accent); }
+
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-form input,
+    .contact-form textarea {
+      background: var(--input-bg); border: 1px solid var(--card-border);
+      border-radius: 12px; padding: 0.9rem 1.1rem;
+      color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.92rem;
+      outline: none; transition: border-color 0.2s;
+      width: 100%;
+    }
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder { color: var(--text-muted); }
+    .contact-form input:focus,
+    .contact-form textarea:focus { border-color: var(--accent); }
+    .contact-form textarea { resize: vertical; min-height: 130px; }
+    .contact-form button {
+      background: var(--accent); color: #fff; border: none;
+      border-radius: 50px; padding: 0.9rem; font-size: 0.95rem;
+      font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif;
+      box-shadow: 0 0 22px var(--accent-glow); transition: opacity 0.2s, transform 0.2s;
+    }
+    .contact-form button:hover { opacity: 0.88; transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 2rem 5%;
+      border-top: 1px solid var(--card-border);
+      color: var(--text-muted); font-size: 0.85rem; position: relative; z-index: 1;
+    }
+    footer span { color: var(--accent); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; transform: scaleY(0.8); }
+      50%       { opacity: 1;   transform: scaleY(1.1); }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; flex-direction: column; position: absolute;
+        top: 100%; left: 0; right: 0; background: var(--nav-bg);
+        padding: 1.5rem 5%; gap: 1.2rem; border-bottom: 1px solid var(--card-border); }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      .hero-inner { flex-direction: column-reverse; text-align: center; }
+      .hero-text { align-items: center; }
+      .hero-photo-ring { width: 200px; height: 200px; }
+      .about-inner, .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .about-visual { min-height: 220px; font-size: 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="logo" href="#hero">Designed<span> By Yemi</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="theme-toggle" id="themeBtn">☀️</button>
+    <a href="#contact" class="nav-cta">Let's Connect</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">Based in Lagos, Nigeria</div>
+      <h1 class="hero-title">Aligning Your Brand<br/>with <span>Visual Purpose</span></h1>
+      <p class="hero-sub">We align your brand's visual identity with your audience's expectations. Let's build a standout market presence together.</p>
+      <div class="hero-btns">
+        <a href="#portfolio" class="btn-primary">View Our Work</a>
+        <a href="#contact" class="btn-outline">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-photo">
+      <div class="hero-photo-ring">
+        <img src="yemi.png" alt="Yemi — Designed By Yemi"/>
+      </div>
+      <div class="hero-photo-label">Yemi · Creative Director</div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll to explore</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="section-alt">
+  <div class="section-head reveal">
+    <div class="section-label">What We Do</div>
+    <h2 class="section-title">Our Services</h2>
+    <p class="section-sub">Creative solutions crafted to elevate your brand and make a lasting impression.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-icon">🖨️</div>
+      <h3>General Printing</h3>
+      <p>From business cards to banners, we deliver high-quality print materials that give your brand a professional, tangible presence in the real world.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">✏️</div>
+      <h3>Logo Design</h3>
+      <p>A logo is the face of your brand. We craft unique, memorable logos that communicate your values and set you apart from the competition.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🎨</div>
+      <h3>Flyer Design</h3>
+      <p>Eye-catching, purpose-driven flyers designed to stop the scroll and convert viewers into customers — both in print and digital formats.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section id="why">
+  <div class="section-head reveal">
+    <div class="section-label">Our Edge</div>
+    <h2 class="section-title">Why Choose Us?</h2>
+    <p class="section-sub">We don't just design — we craft visual stories that connect with your audience on a deeper level.</p>
+  </div>
+  <div class="why-grid" style="max-width:1100px;margin:0 auto;">
+    <div class="why-card reveal">
+      <h4>Creativity</h4>
+      <p>Every design is built from scratch — no generic templates. Each piece is tailored to your unique brand identity and message.</p>
+    </div>
+    <div class="why-card reveal">
+      <h4>Clarity</h4>
+      <p>We make sure your visuals communicate instantly and clearly. Great design speaks before words do.</p>
+    </div>
+    <div class="why-card reveal">
+      <h4>Relevance</h4>
+      <p>We blend current design trends with timeless principles to create graphics your audience actually resonates with.</p>
+    </div>
+    <div class="why-card reveal">
+      <h4>Communication</h4>
+      <p>From brief to final delivery, we collaborate closely so you're never left guessing — your satisfaction drives everything.</p>
+    </div>
+    <div class="why-card reveal">
+      <h4>Quality</h4>
+      <p>We hold every project to the highest standard, ensuring pixel-perfect results whether it's a logo or a full brand identity.</p>
+    </div>
+    <div class="why-card reveal">
+      <h4>Purpose</h4>
+      <p>Every element we design has intention behind it — colour, shape, and typography all serve the goal of your brand.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio" class="section-alt">
+  <div class="section-head reveal">
+    <div class="section-label">Our Works</div>
+    <h2 class="section-title">Recent Projects</h2>
+    <p class="section-sub">A glimpse into the brands we've helped shape and the stories we've told through design.</p>
+  </div>
+
+  <!-- FILTER TABS -->
+  <div class="filter-tabs reveal">
+    <button class="filter-btn active" data-filter="all">All Works</button>
+    <button class="filter-btn" data-filter="flyer">Flyer Design</button>
+    <button class="filter-btn" data-filter="print">General Printing</button>
+    <button class="filter-btn" data-filter="logo">Logo / Branding</button>
+  </div>
+
+  <div class="portfolio-grid" id="portfolioGrid">
+
+    <!-- FLYERS -->
+    <div class="portfolio-item reveal" data-cat="flyer">
+      <div class="portfolio-img"><img src="flyer1.png" alt="Mid Week Prayer Service Flyer"/></div>
+      <div class="portfolio-info">
+        <h4>Mid Week Prayer Service</h4>
+        <p>Bold church event flyer — Powerline Baptist Church.</p>
+        <span class="portfolio-tag">Flyer Design</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-cat="flyer">
+      <div class="portfolio-img"><img src="flyer2.png" alt="African Praise Sunday Flyer"/></div>
+      <div class="portfolio-info">
+        <h4>African Praise Sunday</h4>
+        <p>Vibrant cultural event flyer, rich in colour and energy.</p>
+        <span class="portfolio-tag">Flyer Design</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-cat="flyer">
+      <div class="portfolio-img"><img src="flyer3.jpg" alt="La Double Events Flyer"/></div>
+      <div class="portfolio-info">
+        <h4>La Double Events</h4>
+        <p>Promotional flyer for a full-service events & beauty company.</p>
+        <span class="portfolio-tag">Flyer Design</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-cat="flyer">
+      <div class="portfolio-img"><img src="flyer4.jpg" alt="MS Real Estate Agency Flyer"/></div>
+      <div class="portfolio-info">
+        <h4>MS Real Estate Agency</h4>
+        <p>Strong visual hierarchy real estate promo flyer.</p>
+        <span class="portfolio-tag">Flyer Design</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-cat="flyer">
+      <div class="portfolio-img"><img src="work9.png" alt="Saint Emeralds Laundry Flyer"/></div>
+      <div class="portfolio-info">
+        <h4>Saint Emeralds Laundry</h4>
+        <p>Eye-catching laundry services flyer with bold blue design.</p>
+        <span class="portfolio-tag">Flyer Design</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-cat="flyer">
+      <div class="portfolio-img"><img src="work12.png" alt="Shakes N Slay Cocktail Flyer"/></div>
+      <div class="portfolio-info">
+        <h4>Shakes N' Slay — Mobile Bar</h4>
+        <p>Vibrant cocktail bar flyer printed and delivered for Lagos events.</p>
+        <span class="portfolio-tag">Flyer Design</span>
+      </div>
+    </div>
+
+    <!-- PRINT -->
+    <div class="portfolio-item reveal" data-cat="print">
+      <div class="portfolio-img"><img src="work1.png" alt="Shakes & Slay Neon Sign Design"/></div>
+      <div class="portfolio-info">
+        <h4>Shakes & Slay — Neon Sign Design</h4>
+        <p>Custom neon sign design crafted in CorelDRAW for production.</p>
+        <span class="portfolio-tag">General Printing</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-cat="print">
+      <div class="portfolio-img"><img src="work2.png" alt="Shakes & Slay Neon Sign Finished"/></div>
+      <div class="portfolio-info">
+        <h4>Shakes & Slay — Neon Sign (Finished)</h4>
+        <p>The completed glowing neon sign ready for installation.</p>
+        <span class="portfolio-tag">General Printing</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-cat="print">
+      <div class="portfolio-img"><img src="work3.png" alt="Nisrel Consulting Branded Notebook Interior"/></div>
+      <div class="portfolio-info">
+        <h4>Nisrel Consulting — Branded Notebook</h4>
+        <p>Custom spiral-bound notebook with branded inner pages.</p>
+        <span class="portfolio-tag">General Printing</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-cat="print">
+      <div class="portfolio-img"><img src="work4.png" alt="Nisrel Consulting Notebook Cover"/></div>
+      <div class="portfolio-info">
+        <h4>Nisrel Consulting — Notebook Cover</h4>
+        <p>Professional corporate notebook cover design and print.</p>
+        <span class="portfolio-tag">General Printing</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-cat="print">
+      <div class="portfolio-img"><img src="work5.png" alt="Fercullen Irish Whiskey Branded Pens"/></div>
+      <div class="portfolio-info">
+        <h4>Fercullen Irish Whiskey — Branded Pens</h4>
+        <p>Bulk branded pen production for a premium whiskey brand.</p>
+        <span class="portfolio-tag">General Printing</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-cat="print">
+      <div class="portfolio-img"><img src="work6.png" alt="Fercullen Falls Branded Cups"/></div>
+      <div class="portfolio-info">
+        <h4>Fercullen Falls — Branded Cups</h4>
+        <p>Custom paper cups printed for The Powerscourt Distillery.</p>
+        <span class="portfolio-tag">General Printing</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-cat="print">
+      <div class="portfolio-img"><img src="work7.png" alt="Fercullen Irish Whiskey Branded Caps"/></div>
+      <div class="portfolio-info">
+        <h4>Fercullen Irish Whiskey — Branded Caps</h4>
+        <p>Embroidered branded caps for a luxury Irish whiskey brand.</p>
+        <span class="portfolio-tag">General Printing</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-cat="print">
+      <div class="portfolio-img"><img src="work8.png" alt="Exotic Elegance Branded Bags"/></div>
+      <div class="portfolio-info">
+        <h4>Exotic Elegance — Branded Bags</h4>
+        <p>Custom-printed shopping bags for a luxury perfume brand.</p>
+        <span class="portfolio-tag">General Printing</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-cat="print">
+      <div class="portfolio-img"><img src="work13.png" alt="The Kings Delight Product Packaging"/></div>
+      <div class="portfolio-info">
+        <h4>The Kings Delight — Product Packaging</h4>
+        <p>Full box packaging design and print for a scripture-based card game.</p>
+        <span class="portfolio-tag">General Printing</span>
+      </div>
+    </div>
+
+    <!-- LOGO / BRANDING -->
+    <div class="portfolio-item reveal" data-cat="logo">
+      <div class="portfolio-img"><img src="work10.png" alt="Volang by Tonative Business Cards"/></div>
+      <div class="portfolio-info">
+        <h4>Volang by Tonative — Business Cards</h4>
+        <p>Dual-sided bold business card design for a tech startup.</p>
+        <span class="portfolio-tag">Logo / Branding</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-cat="logo">
+      <div class="portfolio-img"><img src="work11.png" alt="Luxury Jane Boutique Business Cards"/></div>
+      <div class="portfolio-info">
+        <h4>Luxury Jane Boutique — Business Cards</h4>
+        <p>Premium glitter-finish business card design for a fashion boutique.</p>
+        <span class="portfolio-tag">Logo / Branding</span>
+      </div>
+    </div>
+
+  </div>
+  <p class="portfolio-note" style="margin-top:2.5rem;">
+    Want to see more? <a href="#contact">Get in touch</a> and we'll share our full catalogue.
+  </p>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-visual reveal">
+      <img src="yemi.png" alt="Yemi — Designed By Yemi" style="width:100%;height:100%;object-fit:cover;border-radius:24px;"/>
+    </div>
+    <div class="about-text reveal">
+      <div class="section-label">Our Story</div>
+      <h2 class="section-title">Designed By Yemi</h2>
+      <p>We are a Lagos-based graphic design studio passionate about crafting visual identities that speak with clarity and purpose. From startups to established brands, we help businesses look the part.</p>
+      <p>We believe great design is not just about looking good — it's about communicating your brand's values, connecting with your audience, and standing out in a crowded market.</p>
+      <div class="about-stat">
+        <div class="stat">
+          <span class="stat-num">50+</span>
+          <span class="stat-label">Projects Delivered</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">30+</span>
+          <span class="stat-label">Happy Clients</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">3+</span>
+          <span class="stat-label">Years Experience</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section-alt">
+  <div class="section-head reveal">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">Let's Create Something Stunning</h2>
+    <p class="section-sub">Ready to take your brand to the next level? Reach out and let's talk.</p>
+  </div>
+  <div class="contact-inner">
+    <div class="contact-info reveal">
+      <div class="contact-item">
+        <div class="contact-icon">📧</div>
+        <div>
+          <h5>Email Us</h5>
+          <a href="mailto:Anigbajumoopeyemi@gmail.com">Anigbajumoopeyemi@gmail.com</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">💬</div>
+        <div>
+          <h5>WhatsApp</h5>
+          <a href="https://wa.me/2348161358741" target="_blank">+234 816 135 8741</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <h5>Location</h5>
+          <p>Lagos, Nigeria</p>
+        </div>
+      </div>
+    </div>
+    <form class="contact-form reveal" action="https://formspree.io/f/mykawljr" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required/>
+      <input type="email" name="email" placeholder="Your Email" required/>
+      <input type="text" name="subject" placeholder="Subject"/>
+      <textarea name="message" placeholder="Tell us about your project..."></textarea>
+      <button type="submit">Send Message ✦</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Designed with ♥ by <span>Designed By Yemi</span> · Lagos, Nigeria · © 2025. All Rights Reserved.</p>
+</footer>
+
+<script>
+  // Portfolio filter
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      document.querySelectorAll('.portfolio-item').forEach(item => {
+        if (filter === 'all' || item.dataset.cat === filter) {
+          item.classList.remove('hidden');
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // Theme toggle
+  const themeBtn = document.getElementById('themeBtn');
+  const html = document.documentElement;
+  themeBtn.addEventListener('click', () => {
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    themeBtn.textContent = isDark ? '🌙' : '☀️';
+  });
+
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Form submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.textContent = 'Message Sent ✓';
+    btn.style.background = '#16a34a';
+    setTimeout(() => { btn.textContent = 'Send Message ✦'; btn.style.background = ''; e.target.reset(); }, 3000);
+  }
+</script>
+</body>
+</html>
